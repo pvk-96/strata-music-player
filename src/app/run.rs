@@ -148,18 +148,21 @@ pub fn run(options: Options) -> i32 {
         .application_id(APPLICATION_ID)
         .flags(gtk::gio::ApplicationFlags::empty())
         .build();
-    use_icon_theme();
     declare_options(&application);
 
     let holder: Rc<RefCell<Option<Rc<Window>>>> = Rc::new(RefCell::new(None));
     let open_core = RefCell::new(Some(core));
     let pending_warnings = RefCell::new(warnings);
 
+    // `run` is the only place GTK gets initialised: `gtk::Application` initialises it from its
+    // `startup`, which happens inside `run` before any handler below fires. Nothing above this
+    // point may touch GTK, and everything GTK-shaped has to be built from here on.
     application.connect_activate(move |application| {
         if let Some(window) = holder.borrow().as_ref() {
             window.window().present();
             return;
         }
+        use_icon_theme();
         let Some(core) = open_core.borrow_mut().take() else {
             return;
         };
@@ -243,6 +246,10 @@ fn repository_icon_dir(executable: &std::path::Path) -> Option<PathBuf> {
 /// lives in `target/<profile>/`, so the repository's `data/icons` is added to the theme search
 /// path when it sits above the executable. That keeps development honest without depending on
 /// the working directory or on a path frozen at compile time.
+///
+/// GTK is initialised by then: this runs from `activate`, which the application only reaches
+/// through [`run`]. Calling `set_default_icon_name` any earlier aborts with "GTK has not been
+/// initialized", because both `Display::default` and the window icon are GTK calls.
 fn use_icon_theme() {
     if let (Ok(executable), Some(display)) = (std::env::current_exe(), gtk::gdk::Display::default())
     {

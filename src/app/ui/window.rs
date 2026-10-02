@@ -880,7 +880,7 @@ fn refresh(shared: &Rc<Shared>) {
         let playlists = core.playlists();
         shared
             .collection
-            .borrow_mut()
+            .borrow()
             .set_view(&view, &artists, &albums, &folders, &playlists);
     }
 

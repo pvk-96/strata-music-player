@@ -79,8 +79,11 @@ pub struct ItemList {
     list: ListView,
     selection: gtk::SingleSelection,
     store: gio::ListStore,
-    rows: Vec<String>,
-    items: Vec<ItemLabel>,
+    /// Row text and the item behind it. Both are reached through `Rc` clones held by the
+    /// callbacks below, so they are shared state rather than owned fields: the window fills the
+    /// list with `set_items` long after a callback has taken its own handle.
+    rows: RefCell<Vec<String>>,
+    items: RefCell<Vec<ItemLabel>>,
     on_activate: Rc<RefCell<Option<ActivateCallback>>>,
     on_selection_changed: Rc<RefCell<Option<SelectionCallback>>>,
 }
@@ -129,8 +132,8 @@ impl ItemList {
             list,
             selection,
             store,
-            rows: Vec::new(),
-            items: Vec::new(),
+            rows: RefCell::new(Vec::new()),
+            items: RefCell::new(Vec::new()),
             on_activate: Rc::new(RefCell::new(None)),
             on_selection_changed: Rc::new(RefCell::new(None)),
         };
@@ -153,31 +156,19 @@ impl ItemList {
         &self.list
     }
 
-    pub fn len(&self) -> usize {
-        self.items.len()
-    }
-
-    pub fn is_empty(&self) -> bool {
-        self.items.is_empty()
-    }
-
-    pub fn items(&self) -> &[ItemLabel] {
-        &self.items
-    }
-
-    pub fn item(&self, index: usize) -> Option<&ItemLabel> {
-        self.items.get(index)
+    pub fn item(&self, index: usize) -> Option<ItemLabel> {
+        self.items.borrow().get(index).cloned()
     }
 
     /// Replace the list.
-    pub fn set_items(&mut self, items: Vec<ItemLabel>) {
+    pub fn set_items(&self, items: Vec<ItemLabel>) {
         self.store.remove_all();
         let rows = items.iter().map(ItemLabel::row_text).collect::<Vec<_>>();
         for row in &rows {
             self.store.append(&gtk::StringObject::new(row));
         }
-        self.rows = rows;
-        self.items = items;
+        *self.rows.borrow_mut() = rows;
+        *self.items.borrow_mut() = items;
     }
 
     pub fn set_selected(&self, index: Option<usize>) {
@@ -192,7 +183,7 @@ impl ItemList {
             .selected_item()?
             .downcast_ref::<gtk::StringObject>()?
             .string();
-        self.rows.iter().position(|row| *row == text)
+        self.rows.borrow().iter().position(|row| *row == text)
     }
 
     pub fn connect_activate<F: Fn(usize) + 'static>(&self, callback: F) {

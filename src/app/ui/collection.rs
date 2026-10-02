@@ -134,17 +134,9 @@ impl CollectionView {
         self.list.widget()
     }
 
-    pub fn items(&self) -> &[ItemLabel] {
-        self.list.items()
-    }
-
-    pub fn is_empty(&self) -> bool {
-        self.list.is_empty()
-    }
-
     /// Fill the list for a view. Views that show tracks leave it alone.
     pub fn set_view(
-        &mut self,
+        &self,
         view: &View,
         artists: &[ArtistSummary],
         albums: &[AlbumSummary],
@@ -158,9 +150,7 @@ impl CollectionView {
             View::Playlists => playlist_items(playlists),
             _ => Vec::new(),
         };
-        Rc::get_mut(&mut self.list)
-            .expect("the collection list is not shared yet")
-            .set_items(items);
+        self.list.set_items(items);
     }
 
     pub fn connect_activate<F: Fn(View) + 'static>(&self, callback: F) {
