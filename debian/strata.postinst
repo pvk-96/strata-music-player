@@ -1,0 +1,14 @@
+#!/bin/sh
+set -e
+
+# Rebuild the icon caches so the launcher and panel see dev.strata.Strata immediately.
+for cache in gtk4-update-icon-cache gtk-update-icon-cache; do
+    if command -v "$cache" >/dev/null 2>&1; then
+        "$cache" -qtf /usr/share/icons/hicolor || true
+        break
+    fi
+done
+
+#DEBHELPER#
+
+exit 0

@@ -1,0 +1,53 @@
+# Rust build output
+/target/
+
+# Local library databases and their journals. Strata keeps the real one in
+# $XDG_DATA_HOME/strata, so these only appear when a test or a run happens inside the tree.
+/*.db
+/*.db-shm
+/*.db-wal
+/*.db-journal
+**/library.db
+**/library.db-shm
+**/library.db-wal
+**/library.db-journal
+
+# Local configuration written by a run started from the working directory
+/settings.toml
+strata.toml
+
+# Artwork cache and logs, if a run is pointed at the checkout
+/artwork-cache/
+*.log
+
+# Secrets and local overrides. Strata has none committed; these must never be.
+/.env
+.env.*
+*.pem
+*.key
+*.p12
+
+# Editors and IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Python bytecode from the helper scripts
+__pycache__/
+*.py[cod]
+
+# Packaging leftovers
+debian/strata/
+debian/.debhelper/
+debian/files
+debian/*.debhelper.log
+debian/*.substvars
+build/
+dist/
+.flatpak-builder/
+.flatpak/

@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Application
+Name=Strata
+GenericName=Music Player
+Comment=Play the music on your own machine
+Keywords=music;player;audio;library;playlist;
+Exec=strata %U
+Icon=dev.strata.Strata
+Terminal=false
+Categories=AudioVideo;Audio;Player;GTK;
+StartupNotify=true
+StartupWMClass=strata
+MimeType=audio/mpeg;audio/flac;audio/x-vorbis+ogg;audio/x-opus+ogg;audio/mp4;audio/x-m4a;audio/wav;audio/x-wav;audio/x-aiff;application/xspf+xml;audio/x-mpegurl;

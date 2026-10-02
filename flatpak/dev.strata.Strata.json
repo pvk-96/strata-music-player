@@ -1,0 +1,38 @@
+{
+    "id": "dev.strata.Strata",
+    "runtime": "org.gnome.Platform",
+    "runtime-version": "47",
+    "sdk": "org.gnome.Sdk",
+    "sdk-extensions": [
+        "org.freedesktop.Sdk.Extension.rust-stable"
+    ],
+    "command": "strata",
+    "finish-args": [
+        "--share=ipc",
+        "--socket=fallback-x11",
+        "--socket=wayland",
+        "--device=dri",
+        "--share=network=disabled"
+    ],
+    "modules": [
+        {
+            "name": "strata",
+            "buildsystem": "simple",
+            "build-commands": [
+                "cargo fetch --offline",
+                "cargo build --release --offline",
+                "install -Dm755 target/release/strata /app/bin/strata",
+                "install -Dm644 data/dev.strata.Strata.desktop /app/share/applications/dev.strata.Strata.desktop",
+                "install -Dm644 data/dev.strata.Strata.metainfo.xml /app/share/metainfo/dev.strata.Strata.metainfo.xml",
+                "install -d /app/share/icons/hicolor",
+                "cp -r data/icons/hicolor/. /app/share/icons/hicolor/"
+            ],
+            "sources": [
+                {
+                    "type": "dir",
+                    "path": ".."
+                }
+            ]
+        }
+    ]
+}

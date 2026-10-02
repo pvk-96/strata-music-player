@@ -1,0 +1,51 @@
+[package]
+name = "strata"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.85"
+description = "A local-first desktop music player for your own music library"
+license = "GPL-3.0-or-later"
+readme = "README.md"
+homepage = "https://github.com/strata-player/strata"
+repository = "https://github.com/strata-player/strata"
+documentation = "https://docs.rs/strata"
+keywords = ["music", "audio", "player", "gtk", "library"]
+categories = ["multimedia::audio", "gui"]
+default-run = "strata"
+
+[lib]
+name = "strata"
+path = "src/lib.rs"
+
+[[bin]]
+name = "strata"
+path = "src/main.rs"
+
+[dependencies]
+# UI
+gtk = { package = "gtk4", version = "0.11", features = ["v4_14"] }
+# Playback
+gst = { package = "gstreamer", version = "0.25" }
+# Metadata / tags (MIT)
+lofty = "0.25"
+# Database
+rusqlite = { version = "0.40", features = ["bundled"] }
+# Settings
+serde = { version = "1", features = ["derive"] }
+toml = "1"
+# Logging
+log = "0.4"
+# Platform directories
+dirs = "7"
+# Shuffling
+rand = "0.10"
+
+[dev-dependencies]
+tempfile = "3"
+
+[profile.release]
+opt-level = 2
+lto = "thin"
+strip = "debuginfo"
+
+[workspace]

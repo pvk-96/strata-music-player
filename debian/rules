@@ -1,0 +1,18 @@
+#!/usr/bin/make -f
+
+%:
+	dh $@
+
+override_dh_auto_build:
+	cargo build --release
+
+override_dh_auto_test:
+	cargo test --release
+
+override_dh_auto_install:
+	install -Dm755 target/release/strata debian/strata/usr/bin/strata
+	install -Dm644 data/dev.strata.Strata.desktop debian/strata/usr/share/applications/dev.strata.Strata.desktop
+	install -Dm644 data/dev.strata.Strata.metainfo.xml debian/strata/usr/share/metainfo/dev.strata.Strata.metainfo.xml
+	install -d debian/strata/usr/share/icons/hicolor
+	cp -r data/icons/hicolor/. debian/strata/usr/share/icons/hicolor/
+	install -Dm644 LICENSE debian/strata/usr/share/doc/strata/copyright

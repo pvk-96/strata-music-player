@@ -1,0 +1,24 @@
+Source: strata
+Section: sound
+Priority: optional
+Maintainer: Strata contributors <strata@example.invalid>
+Build-Depends: debhelper-compat (= 13),
+               cargo,
+               libgtk-4-dev,
+               libgstreamer1.0-dev,
+               libgstreamer-plugins-base1.0-dev,
+               libsqlite3-dev
+Standards-Version: 4.7.0
+Homepage: https://github.com/strata-player/strata
+Rules-Requires-Root: no
+
+Package: strata
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends},
+         gir1.2-gtk-4.0,
+         gstreamer1.0-plugins-base,
+         gstreamer1.0-plugins-good
+Description: local-first music player
+ Strata plays the music on your own machine. It reads the tags of the files you
+ already have, keeps its library in a local SQLite database, and never modifies
+ your music. No accounts, no telemetry, no network access.

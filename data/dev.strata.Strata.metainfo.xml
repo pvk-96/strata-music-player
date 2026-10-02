@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>dev.strata.Strata</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-or-later</project_license>
+  <name>Strata</name>
+  <summary>Play the music on your own machine</summary>
+  <description>
+    <p>
+      Strata is a local-first music player. It reads tags from the files you already have,
+      keeps its library in a local SQLite database, and never modifies, renames or moves your
+      music.
+    </p>
+    <p>Features:</p>
+    <ul>
+      <li>Browse tracks, albums, artists, folders, favourites and playlists</li>
+      <li>Queue, shuffle, repeat, gapless playback and session restore</li>
+      <li>Instant search across the library</li>
+      <li>Playlists, including M3U, M3U8 and XSPF import and export</li>
+      <li>Every keyboard shortcut can be rebound</li>
+      <li>Rescan in place: files that moved are re-identified instead of duplicated</li>
+    </ul>
+    <p>
+      Everything happens on the machine: no accounts, no telemetry, no network access.
+    </p>
+  </description>
+  <launchable type="desktop-id">dev.strata.Strata.desktop</launchable>
+  <url type="homepage">https://github.com/strata-player/strata</url>
+  <developer id="dev.strata">
+    <name>Strata contributors</name>
+  </developer>
+  <icon type="stock">dev.strata.Strata</icon>
+  <content_rating type="oars-1.1"/>
+  <releases>
+    <release version="0.1.0" date="2026-10-02">
+      <description>
+        <p>First release.</p>
+      </description>
+    </release>
+  </releases>
+  <categories>
+    <category>AudioVideo</category>
+    <category>Audio</category>
+    <category>Player</category>
+  </categories>
+  <requires>
+    <display_length compare="ge">768</display_length>
+  </requires>
+  <recommends>
+    <control>keyboard</control>
+    <control>pointing</control>
+  </recommends>
+</component>
